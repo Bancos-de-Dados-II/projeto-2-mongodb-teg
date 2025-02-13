@@ -7,7 +7,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/clube', route);
+app.use('/clubes', route);
 
 app.listen(port, ()=>{
     console.log(`Servidor rodando na porta: ${port}`);
