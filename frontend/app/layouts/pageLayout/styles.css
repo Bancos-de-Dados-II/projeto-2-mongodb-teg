@@ -1,0 +1,11 @@
+body {
+  min-height: 100vh;
+}
+
+header {
+  height: 10vh;
+}
+
+main {
+  min-height: 90vh;
+}

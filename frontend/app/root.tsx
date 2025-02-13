@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import "./app.css";
+import appStylesHref from "./app.css?url";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -21,8 +21,13 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
+  {
+    rel: "stylesheet",
+    href: appStylesHref,
+  },
 ];
 
+// this layout will be used by all the routes in the app
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -41,10 +46,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// entrypoint component of the application, renders the active route by returning <Outlet />
+// that is a placeholder for the route content
 export default function App() {
   return <Outlet />;
 }
 
+// this error boundary will catch errors in any route in the app
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
