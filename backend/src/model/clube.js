@@ -42,7 +42,7 @@ const clubeShema = new Schema({
         }
     ],
     rivais:{
-        type: String,
+        type: [String],
         default: []
     },
     geocode:{

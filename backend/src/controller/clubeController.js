@@ -33,7 +33,22 @@ export async function deleteClub(req, res){
             }
          })
     } catch (error) {
-        res.status(404).json({message: "Erro ao tentar deletar clube"});
+        res.status(404).json({message: "Error: Clube não encontrado"});
         console.log(error);
+    }
+}
+export async function updateClub(req, res){
+    try {
+        const id = req.params.id;
+        await Clube.updateOne({_id: id}, req.body)
+        .then(resultado =>{
+            if(resultado.modifiedCount > 0){
+                res.status(200).json({message: "Clube atualizado com sucesso"});
+            }
+        })
+    } catch (error) {
+        res.status(404).json({message: "Error: Clube não encontrado"});
+        console.log(error);
+        
     }
 }
