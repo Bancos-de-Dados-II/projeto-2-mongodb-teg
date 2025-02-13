@@ -1,5 +1,6 @@
 import type { LinksFunction } from "react-router";
 import type { Route } from "./+types/home";
+import { lazy, Suspense } from "react";
 
 import styles from "./styles.css?url";
 
@@ -15,12 +16,17 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+const Map = lazy(() => import("~/components/Map"));
+
 export default function Home() {
   return (
     <main>
-      <div>
-        <h1>hello from the home page</h1>
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <div className="club-form-placeholder">
+          <h1>club form placeholder</h1>
+        </div>
+        <Map />
+      </Suspense>
     </main>
   );
 }

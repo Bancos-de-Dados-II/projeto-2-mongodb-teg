@@ -3,9 +3,10 @@ body {
 }
 
 header {
-  height: 10vh;
+  height: 5vh;
 }
 
 main {
-  min-height: 90vh;
+  height: 95vh;
+  min-height: 95vh;
 }
