@@ -1,7 +1,9 @@
+import type { LinksFunction } from "react-router";
 import { Marker, MapContainer, TileLayer, Popup } from "react-leaflet";
 
-import "leaflet/dist/leaflet.css";
-import "./styles.css";
+import styles from "./styles.css?url";
+
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export default function Map() {
   return (
