@@ -1,11 +1,13 @@
 import type { LinksFunction } from "react-router";
 import type { Route } from "./+types/home";
 import Map, { links as mapLinks } from "~/components/Map/index.client";
+import ClubInfo, { links as clubInfoLinks } from "~/components/clubInfo";
 
 import styles from "./styles.css?url";
 
 export const links: LinksFunction = () => [
   ...mapLinks(),
+  ...clubInfoLinks(),
   { rel: "stylesheet", href: styles },
 ];
 
@@ -20,9 +22,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <main>
-      <div className="club-form-placeholder">
-        <h1>club form placeholder</h1>
-      </div>
+      <ClubInfo />
       <Map />
     </main>
   );
