@@ -1,3 +1,5 @@
+import type { Icon } from "leaflet";
+
 export type Titulo = {
   nome: string;
   conquistas: number;
@@ -12,6 +14,7 @@ export type Clube = {
   id: string;
   nome: string;
   iconURL?: string;
+  leafletIcon?: Icon;
   tecnico: string;
   anoFundacao: number;
   estadio: string;
@@ -50,7 +53,7 @@ const clubMap = new Map<string, Clube>([
       nome: "Barcelona",
       tecnico: "Xavi Hernandez",
       anoFundacao: 1899,
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/161.png",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/140.png",
       estadio: "Camp Nou",
       liga: "La Liga",
       local: "Barcelona",
@@ -70,7 +73,7 @@ const clubMap = new Map<string, Clube>([
       nome: "Manchester United",
       tecnico: "Erik ten Hag",
       anoFundacao: 1878,
-      iconURL: "https://en.soccerwiki.org/squad.php?clubid=49",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
       estadio: "Old Trafford",
       liga: "Premier League",
       local: "Manchester",
@@ -91,6 +94,7 @@ const clubMap = new Map<string, Clube>([
       tecnico: "Julian Nagelsmann",
       anoFundacao: 1900,
       estadio: "Allianz Arena",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/391.png",
       liga: "Bundesliga",
       local: "Munich",
       pais: "Alemanha",
@@ -108,7 +112,7 @@ const clubMap = new Map<string, Clube>([
       id: "5",
       nome: "Juventus",
       tecnico: "Massimiliano Allegri",
-      iconURL: "https://en.soccerwiki.org/squad.php?clubid=110",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/110.png",
       anoFundacao: 1897,
       estadio: "Allianz Stadium",
       liga: "Serie A",
@@ -128,6 +132,7 @@ const clubMap = new Map<string, Clube>([
       id: "6",
       nome: "Paris Saint-Germain",
       tecnico: "Mauricio Pochettino",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/338.png",
       anoFundacao: 1970,
       estadio: "Parc des Princes",
       liga: "Ligue 1",
@@ -149,6 +154,7 @@ const clubMap = new Map<string, Clube>([
       tecnico: "Jurgen Klopp",
       anoFundacao: 1892,
       estadio: "Anfield",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/44.png",
       liga: "Premier League",
       local: "Liverpool",
       pais: "Inglaterra",
@@ -166,6 +172,7 @@ const clubMap = new Map<string, Clube>([
       id: "8",
       nome: "Chelsea",
       tecnico: "Thomas Tuchel",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/21.png",
       anoFundacao: 1905,
       estadio: "Stamford Bridge",
       liga: "Premier League",
@@ -185,6 +192,7 @@ const clubMap = new Map<string, Clube>([
       id: "9",
       nome: "AC Milan",
       tecnico: "Stefano Pioli",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/115.png",
       anoFundacao: 1899,
       estadio: "San Siro",
       liga: "Serie A",
@@ -204,6 +212,7 @@ const clubMap = new Map<string, Clube>([
       id: "10",
       nome: "Inter Milan",
       tecnico: "Simone Inzaghi",
+      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/109.png",
       anoFundacao: 1908,
       estadio: "San Siro",
       liga: "Serie A",
