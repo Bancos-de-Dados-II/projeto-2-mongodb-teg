@@ -13,7 +13,7 @@ const clubeShema = new Schema({
         require: true
     },
     imagemURL: String,
-    gerente: String,
+    tecnico: String,
     nomeCurto: String,
     anoFundacao: {
         type: Number,

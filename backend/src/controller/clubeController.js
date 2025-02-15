@@ -1,4 +1,6 @@
+import multer from "multer";
 import Clube from "../model/clube.js";
+
 
 export async function findAllClubs(req, res){
     try {
@@ -7,19 +9,50 @@ export async function findAllClubs(req, res){
         
     } catch (error) {
         res.status(400).json({message: "Error a buscar todos os clubes"});
-        console.log(error);
     }
 }
 
 export async function createClub(req, res){
     try {
-        const clube = new Clube(req.body);
+        const {id, nome, tecnico, nomeCurto, anoFundacao, estadio, liga,
+            nomeLocalizacao, pais, titulos, rivais, geocode } = req.body;
+        
+        let imagemURL = "";
+        if (req.file) {
+            imagemURL = `uploads/${req.file.filename}`;
+        }
+        let geocodeObjeto = null;
+
+        // Se geocode for uma string, tenta fazer o parse
+        if (typeof geocode === "string") {
+            try {
+                geocodeObjeto = JSON.parse(geocode);
+            } catch (error) {
+                return res.status(400).json({ error: "Formato de geocode inválido" });
+            }
+        } else if (typeof geocode === "object" && geocode !== null) {
+            geocodeObjeto = geocode; // geocode já é um objeto, então não precisa de parse
+        }
+        const clube = new Clube({
+            id,
+            nome,
+            imagemURL,
+            tecnico,
+            nomeCurto,
+            anoFundacao,
+            estadio,
+            liga,
+            nomeLocalizacao,
+            pais,
+            titulos, 
+            rivais,
+            geocode: geocodeObjeto
+        });
         await clube.save();
         res.status(201).json({message: "Clube criado com sucesso", clube});
         
     } catch (error) {
         res.status(400).json({message: "Error ao tentar criar clube"});
-        console.log(error);
     }
 }
 export async function deleteClub(req, res){
@@ -34,7 +67,6 @@ export async function deleteClub(req, res){
          })
     } catch (error) {
         res.status(404).json({message: "Error: Clube não encontrado"});
-        console.log(error);
     }
 }
 export async function updateClub(req, res){
@@ -48,7 +80,6 @@ export async function updateClub(req, res){
         })
     } catch (error) {
         res.status(404).json({message: "Error: Clube não encontrado"});
-        console.log(error);
         
     }
 }
