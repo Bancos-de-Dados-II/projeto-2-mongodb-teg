@@ -1,22 +1,39 @@
-import type { LinksFunction } from "react-router";
-import { Marker, MapContainer, TileLayer, Popup } from "react-leaflet";
+import { useNavigate, type LinksFunction } from "react-router";
+import { useMap, Marker, MapContainer, TileLayer } from "react-leaflet";
 
 import styles from "./styles.css?url";
 import { useEffect, useState } from "react";
 import { type Clube, fetchAllClubs } from "~/utils/mockData";
 import { Icon } from "leaflet";
+import { useMapStore } from "~/stores/mapStore";
+
+function MapCenterHandler() {
+  const map = useMap();
+  const { center } = useMapStore();
+
+  useEffect(() => {
+    if (center) map.flyTo(center, map.getZoom());
+  }, [center, map]);
+
+  return null;
+}
+
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export default function Map() {
+  let navigate = useNavigate();
+
   const [clubs, setClubs] = useState<Clube[]>([]);
+  const { setCenter } = useMapStore();
 
   useEffect(() => {
     const fetchData = async () => {
       const clubs = await fetchAllClubs();
       clubs.map((club) => {
         club.leafletIcon = new Icon({
-          iconUrl: club.iconURL || "https://cdn.soccerwiki.org/images/logos/clubs/163.png",
+          iconUrl:
+            club.iconURL || "https://cdn.soccerwiki.org/images/logos/clubs/163.png",
           iconSize: [30, 30],
         });
         return club;
@@ -43,17 +60,19 @@ export default function Map() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <MapCenterHandler />
       {clubs.map((club) => (
         <Marker
           position={[club.geocode.lat, club.geocode.lng]}
           key={club.id}
           icon={club.leafletIcon}
-        >
-          <Popup>
-            <h3>{club.nome}</h3>
-            <p>{club.tecnico}</p>
-          </Popup>
-        </Marker>
+          eventHandlers={{
+            click: () => {
+              setCenter(club.geocode.lat, club.geocode.lng);
+              navigate(`/club/${club.id}`);
+            },
+          }}
+        ></Marker>
       ))}
     </MapContainer>
   );

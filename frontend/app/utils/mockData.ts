@@ -25,7 +25,7 @@ export type Clube = {
   geocode: Geocode;
 };
 
-const clubMap = new Map<string, Clube>([
+export const clubMap = new Map<string, Clube>([
   [
     "1",
     {
