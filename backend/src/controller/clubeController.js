@@ -1,6 +1,16 @@
 import multer from "multer";
 import Clube from "../model/clube.js";
 
+export async function findByIdClub(req, res){
+    try {
+        const id = req.params.id;
+        const clube = await Clube.findById(id);
+        res.status(200).json(clube);
+        
+    } catch (error) {
+        res.status(404).json({message: "Error: clube não encontrado"});
+    }
+}
 
 export async function findAllClubs(req, res){
     try {
@@ -49,7 +59,7 @@ export async function createClub(req, res){
             geocode: geocodeObjeto
         });
         await clube.save();
-        res.status(201).json({message: "Clube criado com sucesso", clube});
+        res.status(201).json(clube);
         
     } catch (error) {
         res.status(400).json({message: "Error ao tentar criar clube"});
@@ -72,12 +82,8 @@ export async function deleteClub(req, res){
 export async function updateClub(req, res){
     try {
         const id = req.params.id;
-        await Clube.updateOne({_id: id}, req.body)
-        .then(resultado =>{
-            if(resultado.modifiedCount > 0){
-                res.status(200).json({message: "Clube atualizado com sucesso"});
-            }
-        })
+        const clube = await Clube.findOneAndUpdate({_id:id}, req.body, {new:true})
+        res.status(200).json(clube);
     } catch (error) {
         res.status(404).json({message: "Error: Clube não encontrado"});
         

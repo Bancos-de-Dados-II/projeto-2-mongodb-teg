@@ -5,6 +5,7 @@ import {upload} from "../config/multer.js";
 const route = express.Router();
 
 route.get('/', clubeController.findAllClubs);
+route.get('/:id', clubeController.findByIdClub);
 route.post('/', upload.single("file"), clubeController.createClub);
 route.delete('/:id', clubeController.deleteClub);
 route.put('/:id', clubeController.updateClub);
