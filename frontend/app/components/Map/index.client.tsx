@@ -1,10 +1,10 @@
 import { useNavigate, type LinksFunction } from "react-router";
-import { useMap, Marker, MapContainer, TileLayer } from "react-leaflet";
+import { useMap, Marker, MapContainer, TileLayer, Popup } from "react-leaflet";
+import { Icon } from "leaflet";
 
 import styles from "./styles.css?url";
 import { useEffect, useState } from "react";
 import { type Clube, fetchAllClubs } from "~/utils/mockData";
-import { Icon } from "leaflet";
 import { useMapStore } from "~/stores/mapStore";
 
 function MapCenterHandler() {
@@ -33,7 +33,7 @@ export default function Map() {
       clubs.map((club) => {
         club.leafletIcon = new Icon({
           iconUrl:
-            club.iconURL || "https://cdn.soccerwiki.org/images/logos/clubs/163.png",
+            club.iconURL || "/football-club.png",
           iconSize: [30, 30],
         });
         return club;
@@ -72,7 +72,9 @@ export default function Map() {
               navigate(`/club/${club.id}`);
             },
           }}
-        ></Marker>
+        >
+          <Popup><h3>{club.nome}</h3></Popup>
+        </Marker>
       ))}
     </MapContainer>
   );

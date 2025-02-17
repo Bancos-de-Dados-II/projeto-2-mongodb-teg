@@ -1,69 +1,94 @@
+import { useEffect, useRef } from "react";
 import { useNavigate, type LinksFunction } from "react-router";
+import { Button } from "@mui/material";
 import type { Clube } from "~/utils/mockData";
 
 import styles from "./styles.css?url";
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }];
-};
+const fallbackImg = "/football-club.png"
 
 interface ClubInfoProps {
   club: Clube;
 }
 
+let rerenders = 0;
+
 export default function ClubInfo({ club }: ClubInfoProps) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (club.nome === "Ajax") console.log(++rerenders);
+  });
+
+  function handleImageError() {
+    if (imgRef.current) {
+      imgRef.current.src = fallbackImg;
+    }
+  }
 
   return (
     <div className="club-div">
-      <div className="upper-club-div">
-        <h1 className="club-name">{club.nome}</h1>
-        <nav className="club-nav">
-          <a href="">details</a>
-          <a href="">titulos</a>
-          <a href="">elenco</a>
-        </nav>
-        <button onClick={() => navigate("/")}>close</button>
+    <div className="upper-club-div">
+      <h1 className="club-name">{club.nome}</h1>
+      <div className="button-div">
+        <Button variant="contained">Edit</Button>
+        <Button variant="contained" color="error" onClick={() => navigate("/")}>Close</Button>
       </div>
-      <div className="bottom-club-div">
-        <div className="club-logo">
-          <img className="club-logo-img" src={club.iconURL} alt="" />
-        </div>
-        <div className="club-details">
-          <ul>
-            <li className="club-detail">
-              <p className="player-info-subtitle">
-                <span className="text-dark">Tecnico: </span>{club.tecnico}
-              </p>
-            </li>
-            <li className="club-detail">
-              <p className="player-info-subtitle">
-                <span className="text-dark">Ano Fundação: </span>{club.anoFundacao}
-              </p>
-            </li>
-            <li className="club-detail">
-              <p className="player-info-subtitle">
-                <span className="text-dark">Estádio: </span>{club.estadio}
-              </p>
-            </li>
-            <li className="club-detail">
-              <p className="player-info-subtitle">
-                <span className="text-dark">Liga: </span>{club.liga}
-              </p>
-            </li>
-            <li className="club-detail">
-              <p className="player-info-subtitle">
-                <span className="text-dark">Local: </span>{club.local}
-              </p>
-            </li>
-            <li className="club-detail">
-              <p className="player-info-subtitle">
-                <span className="text-dark">País: </span>{club.pais}
-              </p>
-            </li>
-          </ul>
-        </div>
+    </div>
+    <div className="bottom-club-div">
+      <div className="club-logo">
+        <img ref={imgRef} className="club-logo-img" src={club.iconURL || fallbackImg} onError={handleImageError} alt={club.nome} />
       </div>
+        <ClubData club={club} />
+    </div>
+    </div>
+  );
+};
+
+function ClubData({club}: { club: Clube}) {
+ const details = [
+    { label: "Técnico", value: club.tecnico },
+    { label: "Ano Fundação", value: club.anoFundacao },
+    { label: "Estádio", value: club.estadio },
+    { label: "Liga", value: club.liga },
+    { label: "Local", value: club.local },
+    { label: "País", value: club.pais },
+  ];
+
+  return (
+    <div className="club-info">
+    <div className="club-details club-section">
+      <h2 className="text-dark club-section-title">Details</h2>
+      <ul>
+        {details.map(({ label, value }) => (
+          <li className="club-detail" key={label}>
+            <p className="player-info-subtitle text-green">
+              <span className="text-dark">{label}: </span>
+              {value}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div className="club-titles club-section">
+      <h2 className="text-dark club-section-title">Títulos</h2>
+      {club.titulos.length === 0 ? (
+        <p>No titles conquered</p>
+      ) : (
+        <ul>
+          {club.titulos.map(({ nome, conquistas }, ind) => (
+            <li key={ind}>
+              <p className="player-info-subtitle text-green">
+                <span className="text-dark text-lower">{conquistas}x: </span>
+                {nome}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
     </div>
   );
 }
