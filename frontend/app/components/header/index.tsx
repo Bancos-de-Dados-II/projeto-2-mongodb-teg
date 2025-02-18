@@ -1,6 +1,8 @@
-import { Link } from "react-router";
+import { Link, type LinksFunction } from "react-router";
 
-import "./styles.css";
+import styles from "./styles.css?url";
+
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export default function Header() {
   return (
