@@ -39,7 +39,7 @@ export default function ClubInfo({ club }: ClubInfoProps) {
     </div>
     <div className="bottom-club-div">
       <div className="club-logo">
-        <img ref={imgRef} className="club-logo-img" src={club.iconURL || fallbackImg} onError={handleImageError} alt={club.nome} />
+        <img ref={imgRef} className="club-logo-img" src={club.icon.url || fallbackImg} onError={handleImageError} alt={club.nome} />
       </div>
         <ClubData club={club} />
     </div>
@@ -54,7 +54,7 @@ function ClubData({club}: { club: Clube}) {
     { label: "Estádio", value: club.estadio },
     { label: "Liga", value: club.liga },
     { label: "Local", value: club.local },
-    { label: "País", value: club.pais },
+    { label: "País", value: club.country },
   ];
 
   return (

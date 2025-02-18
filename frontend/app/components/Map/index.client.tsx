@@ -3,9 +3,11 @@ import { useMap, Marker, MapContainer, TileLayer, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 
 import styles from "./styles.css?url";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { type Clube, fetchAllClubs } from "~/utils/mockData";
 import { useMapStore } from "~/stores/mapStore";
+import { useStore } from "zustand";
+import { useClubStore } from "~/stores/clubStore";
 
 function MapCenterHandler() {
   const map = useMap();
@@ -18,36 +20,13 @@ function MapCenterHandler() {
   return null;
 }
 
-
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
-export default function Map() {
-  let navigate = useNavigate();
+type Props = {
+  children?: string | ReactNode | ReactNode[];
+}
 
-  const [clubs, setClubs] = useState<Clube[]>([]);
-  const { setCenter } = useMapStore();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const clubs = await fetchAllClubs();
-      clubs.map((club) => {
-        club.leafletIcon = new Icon({
-          iconUrl:
-            club.iconURL || "/football-club.png",
-          iconSize: [30, 30],
-        });
-        return club;
-      });
-      setClubs(clubs);
-    };
-
-    fetchData();
-
-    return () => {
-      console.log("cleanup");
-    };
-  }, []);
-
+export default function Map({children}: Props) {
   return (
     <MapContainer
       center={[-20, -50]}
@@ -61,21 +40,7 @@ export default function Map() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <MapCenterHandler />
-      {clubs.map((club) => (
-        <Marker
-          position={[club.geocode.lat, club.geocode.lng]}
-          key={club.id}
-          icon={club.leafletIcon}
-          eventHandlers={{
-            click: () => {
-              setCenter(club.geocode.lat, club.geocode.lng);
-              navigate(`/club/${club.id}`);
-            },
-          }}
-        >
-          <Popup><h3>{club.nome}</h3></Popup>
-        </Marker>
-      ))}
+      {children}
     </MapContainer>
   );
 }

@@ -1,4 +1,4 @@
-import type { Icon } from "leaflet";
+import type { MyIcon } from "~/types";
 
 export type Titulo = {
   nome: string;
@@ -13,14 +13,13 @@ export type Geocode = {
 export type Clube = {
   id: string;
   nome: string;
-  iconURL?: string;
-  leafletIcon?: Icon;
+  icon: MyIcon,
   tecnico: string;
   anoFundacao: number;
   estadio: string;
   liga: string;
   local: string;
-  pais: string;
+  country: string;
   titulos: Titulo[];
   geocode: Geocode;
 };
@@ -33,11 +32,14 @@ export const clubMap = new Map<string, Clube>([
       nome: "Real Madrid",
       tecnico: "Carlo Ancelotti",
       anoFundacao: 1902,
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/163.png",
+      icon: {
+        url: "https://cdn.soccerwiki.org/images/logos/clubs/163.png",
+        size: [30,30],
+      },
       estadio: "Santiago Bernabeu",
       liga: "La Liga",
       local: "Madrid",
-      pais: "Espanha",
+      country: "Spain",
       geocode: { lat: 40.45306, lng: -3.68835 },
       titulos: [
         { nome: "La Liga", conquistas: 34 },
@@ -53,11 +55,14 @@ export const clubMap = new Map<string, Clube>([
       nome: "Barcelona",
       tecnico: "Xavi Hernandez",
       anoFundacao: 1899,
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/140.png",
+      icon: {
+        url: "https://cdn.soccerwiki.org/images/logos/clubs/140.png",
+        size: [30,30]
+      },
       estadio: "Camp Nou",
       liga: "La Liga",
       local: "Barcelona",
-      pais: "Espanha",
+      country: "Spain",
       geocode: { lat: 41.3809, lng: 2.12282 },
       titulos: [
         { nome: "La Liga", conquistas: 26 },
@@ -73,11 +78,14 @@ export const clubMap = new Map<string, Clube>([
       nome: "Manchester United",
       tecnico: "Erik ten Hag",
       anoFundacao: 1878,
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      icon: {
+        url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+        size: [30,30]
+      },
       estadio: "Old Trafford",
       liga: "Premier League",
       local: "Manchester",
-      pais: "Inglaterra",
+      country: "England",
       geocode: { lat: 53.4631, lng: -2.29139 },
       titulos: [
         { nome: "Premier League", conquistas: 20 },
@@ -94,10 +102,13 @@ export const clubMap = new Map<string, Clube>([
       tecnico: "Julian Nagelsmann",
       anoFundacao: 1900,
       estadio: "Allianz Arena",
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/391.png",
+      icon: {
+      url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      size: [30,30]
+      },
       liga: "Bundesliga",
       local: "Munich",
-      pais: "Alemanha",
+      country: "Germany",
       geocode: { lat: 48.2188, lng: 11.6247 },
       titulos: [
         { nome: "Bundesliga", conquistas: 31 },
@@ -112,12 +123,15 @@ export const clubMap = new Map<string, Clube>([
       id: "5",
       nome: "Juventus",
       tecnico: "Massimiliano Allegri",
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/110.png",
+      icon: {
+      url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      size: [30,30]
+      },
       anoFundacao: 1897,
       estadio: "Allianz Stadium",
       liga: "Serie A",
       local: "Turin",
-      pais: "Itália",
+      country: "Itália",
       geocode: { lat: 45.1096, lng: 7.6413 },
       titulos: [
         { nome: "Serie A", conquistas: 36 },
@@ -132,12 +146,15 @@ export const clubMap = new Map<string, Clube>([
       id: "6",
       nome: "Paris Saint-Germain",
       tecnico: "Mauricio Pochettino",
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/338.png",
+      icon: {
+      url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      size: [30,30]
+      },
       anoFundacao: 1970,
       estadio: "Parc des Princes",
       liga: "Ligue 1",
       local: "Paris",
-      pais: "França",
+      country: "França",
       geocode: { lat: 48.8414, lng: 2.253 },
       titulos: [
         { nome: "Ligue 1", conquistas: 9 },
@@ -154,10 +171,13 @@ export const clubMap = new Map<string, Clube>([
       tecnico: "Jurgen Klopp",
       anoFundacao: 1892,
       estadio: "Anfield",
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/44.png",
+      icon: {
+      url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      size: [30,30]
+      },
       liga: "Premier League",
       local: "Liverpool",
-      pais: "Inglaterra",
+      country: "Inglaterra",
       geocode: { lat: 53.4308, lng: -2.9608 },
       titulos: [
         { nome: "Premier League", conquistas: 19 },
@@ -172,12 +192,15 @@ export const clubMap = new Map<string, Clube>([
       id: "8",
       nome: "Chelsea",
       tecnico: "Thomas Tuchel",
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/21.png",
+      icon: {
+      url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      size: [30,30]
+      },
       anoFundacao: 1905,
       estadio: "Stamford Bridge",
       liga: "Premier League",
       local: "London",
-      pais: "Inglaterra",
+      country: "Inglaterra",
       geocode: { lat: 51.4817, lng: -0.191 },
       titulos: [
         { nome: "Premier League", conquistas: 6 },
@@ -192,12 +215,15 @@ export const clubMap = new Map<string, Clube>([
       id: "9",
       nome: "AC Milan",
       tecnico: "Stefano Pioli",
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/115.png",
+      icon: {
+      url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      size: [30,30]
+      },
       anoFundacao: 1899,
       estadio: "San Siro",
       liga: "Serie A",
       local: "Milan",
-      pais: "Itália",
+      country: "Itália",
       geocode: { lat: 45.4781, lng: 9.124 },
       titulos: [
         { nome: "Serie A", conquistas: 18 },
@@ -212,12 +238,15 @@ export const clubMap = new Map<string, Clube>([
       id: "10",
       nome: "Inter Milan",
       tecnico: "Simone Inzaghi",
-      iconURL: "https://cdn.soccerwiki.org/images/logos/clubs/109.png",
+      icon: {
+      url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      size: [30,30]
+      },
       anoFundacao: 1908,
       estadio: "San Siro",
       liga: "Serie A",
       local: "Milan",
-      pais: "Itália",
+      country: "Itália",
       geocode: { lat: 45.4781, lng: 9.124 },
       titulos: [
         { nome: "Serie A", conquistas: 19 },
@@ -234,9 +263,13 @@ export const clubMap = new Map<string, Clube>([
       tecnico: "Erik ten Hag",
       anoFundacao: 1900,
       estadio: "Johan Cruyff Arena",
+      icon: {
+      url: "https://cdn.soccerwiki.org/images/logos/clubs/49.png",
+      size: [30,30]
+      },
       liga: "Eredivisie",
       local: "Amsterdam",
-      pais: "Holanda",
+      country: "Holanda",
       geocode: { lat: 52.3142, lng: 4.941 },
       titulos: [
         { nome: "Eredivisie", conquistas: 35 },

@@ -18,3 +18,18 @@ main {
   background-color: white;
   border-radius: 1rem;
 }
+
+.searchInput{
+  justify-content: space-between;
+  width: 100%;
+}
+
+.flex-row {
+  display: flex;
+}
+
+.filter-div {
+  gap: 2rem;
+  align-content: center;
+  align-items: center;
+}
