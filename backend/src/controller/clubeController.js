@@ -25,12 +25,8 @@ export async function findAllClubs(req, res){
 export async function createClub(req, res){
     try {
         const {id, nome, tecnico, nomeCurto, anoFundacao, estadio, liga,
-            nomeLocalizacao, pais, titulos, rivais, geocode } = req.body;
+            nomeLocalizacao, pais, titulos, rivais, geocode, imageurl } = req.body;
         
-        let imagemURL = "";
-        if (req.file) {
-            imagemURL = `uploads/${req.file.filename}`;
-        }
         let geocodeObjeto = null;
 
         // Se geocode for uma string, tenta fazer o parse
@@ -46,7 +42,7 @@ export async function createClub(req, res){
         const clube = new Clube({
             id,
             nome,
-            imagemURL,
+            imageurl,
             tecnico,
             nomeCurto,
             anoFundacao,

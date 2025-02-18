@@ -12,7 +12,7 @@ const clubeShema = new Schema({
         type: String,
         require: true
     },
-    imagemURL: String,
+    imageurl: String,
     tecnico: String,
     nomeCurto: String,
     anoFundacao: {
