@@ -37,18 +37,6 @@ export async function getClubById(id: string): Promise<Clube | undefined> {
   }
 }
 
-export async function deleteClubById(id: string): Promise<boolean> {
-  try {
-    const resp = await fetch(`http://localhost:3000/clubes/${id}`, {
-      method: "DELETE",
-    })
-    if (!resp.ok) return false;
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
-
 export async function insertClubWithFile(club: ClubeInput): Promise<boolean> {
   try {
     const formData = new FormData();
@@ -124,5 +112,14 @@ export async function insertClub(club: ClubeInput): Promise<any | undefined> {
     return data;
   } catch(err) {
     return 
+  }
+}
+
+export async function deleteClub(id: String): Promise<boolean> {
+  try {
+    const resp = await axios.delete("http://localhost:3000/clubes/" + id);
+    return resp.status === 200
+  } catch (error) {
+    return false;
   }
 }

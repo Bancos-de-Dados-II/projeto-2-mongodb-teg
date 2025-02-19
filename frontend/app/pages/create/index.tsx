@@ -12,7 +12,6 @@ import Map, {links as mapLinks} from "~/components/Map/index.client";
 import styles from "./styles.css?url"
 import type { ClubeInput } from "~/types";
 import { insertClub } from "~/api/custom";
-import { useClubStore } from "~/stores/clubStore";
 import { fetchAllClubs } from "~/utils/mockData";
 export const links: LinksFunction = () => [
   ...searchInputLinks(),
@@ -26,7 +25,6 @@ export default function Create() {
   const [position] = useState<[number, number]>([0,0]);
   const childRef = useRef<L.Marker | null>(null);
   const { setCenter, }= useMapStore();
-  const {addClub}=useClubStore();
   const navigate = useNavigate();
 
   async function handleClubSubmit(club: ClubeInput) {
@@ -42,7 +40,7 @@ export default function Create() {
     const result = await insertClub(club);
     if (result) {
       await fetchAllClubs()
-      navigate("/club/" + result.id)
+      navigate("/")
     }
     else setLoader(false);
   }

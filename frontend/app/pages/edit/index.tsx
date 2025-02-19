@@ -13,7 +13,7 @@ import Map, {links as mapLinks} from "~/components/Map/index.client";
 
 import styles from "./styles.css?url"
 import type { ClubeInput } from "~/types";
-import { deleteClubById, getClubById, insertClub, insertClubWithFile, updateClub as updateClubAPI } from "~/api/custom";
+import { deleteClub, getClubById, updateClub as updateClubAPI } from "~/api/custom";
 import { useClubStore } from "~/stores/clubStore";
 export const links: LinksFunction = () => [
   ...searchInputLinks(),
@@ -51,7 +51,7 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
     const result = await updateClubAPI(other, club.id);
     if (result) {
       await fetchClubs()
-      navigate("/club/" + result.id)
+      navigate("/")
     }
     else setLoader(false);
   }
@@ -67,9 +67,9 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
     }
   }
 
-  async function deleteClub() {
+  async function handleDelete() {
     setLoader(true);
-    const resp = await deleteClubById(club.id)
+    const resp = await deleteClub(club.id)
     if (resp) await fetchClubs();
     navigate("/")
   }
@@ -98,7 +98,7 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
             >
             </MarkerPopup>
           </Map>
-          <Button variant="outlined" startIcon={<DeleteIcon />} style={{marginTop: "auto", marginLeft: "auto"}} disabled={loader} onClick={deleteClub}>
+          <Button variant="outlined" startIcon={<DeleteIcon />} style={{marginTop: "auto", marginLeft: "auto"}} disabled={loader} onClick={handleDelete}>
             Delete
           </Button>
         </div>
