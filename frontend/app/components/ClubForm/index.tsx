@@ -6,13 +6,13 @@ import {
   Box,
   IconButton,
 } from "@mui/material";
+import AddCircle from "@mui/icons-material/AddCircle";
+import Delete from "@mui/icons-material/Delete";
+import type { ClubeInput } from "~/utils/mockData";
 import type { Titulo } from "~/types";
-
-import styles from "./styles.css?url";
-import { AddCircle, Delete } from "@mui/icons-material";
-import type {  ClubeInput } from "~/utils/mockData";
 import UploadBtn, {links as uploadBtnLinks} from "./UploadBtn";
 
+import styles from "./styles.css?url";
 export const links: LinksFunction = () => [...uploadBtnLinks(), { rel: "stylesheet", href: styles }];
 
 export interface Props {
