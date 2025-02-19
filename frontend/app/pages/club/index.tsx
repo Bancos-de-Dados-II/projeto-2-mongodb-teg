@@ -27,7 +27,7 @@ export default function Club({ loaderData }: Route.ComponentProps) {
   const { setCenter } = useMapStore();
 
   useEffect(() => {
-    setCenter(loaderData.geocode.lat, loaderData.geocode.lng);
+    setCenter(loaderData.geocode[0], loaderData.geocode[1]);
   }, []);
 
   return <ClubInfo club={loaderData} />;

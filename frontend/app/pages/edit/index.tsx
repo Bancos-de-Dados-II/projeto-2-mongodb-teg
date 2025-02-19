@@ -4,7 +4,6 @@ import type { Route } from "./+types/modify";
 import { Button, Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { fetchClubById, type ClubeInput } from "~/utils/mockData";
 import { querySearch } from "~/api/nomatin";
 import { useMapStore } from "~/stores/mapStore";
 import MarkerPopup from "~/components/MarkerPopup/index.client";
@@ -13,6 +12,8 @@ import ClubForm, {links as formLinks} from "~/components/ClubForm";
 import Map, {links as mapLinks} from "~/components/Map/index.client";
 
 import styles from "./styles.css?url"
+import type { ClubeInput } from "~/types";
+import { getClubById } from "~/api/custom";
 export const links: LinksFunction = () => [
   ...searchInputLinks(),
   ...formLinks(),
@@ -20,16 +21,16 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
 ];
 
-export async function clientLoader({params}: Route.LoadreArgs) {
-  const result = await fetchClubById(params.id);
+export async function clientLoader({params}: Route.LoaderArgs) {
+  const result = await getClubById(params.id);
   if (!result) throw redirect("/");
   return { club: result };
 }
 
-export default function Modify({loaderData}: Route.LoadreArgs) {
+export default function Modify({loaderData}: Route.LoaderArgs) {
   const { club } = loaderData;
   const [loader, setLoader]= useState(false);
-  const [position] = useState<[number, number]>([club.geocode.lat, club.geocode.lng]);
+  const [position] = useState<[number, number]>([club.geocode[0], club.geocode[1]]);
   const childRef = useRef<L.Marker | null>(null);
   const { setCenter }= useMapStore();
 
@@ -55,7 +56,7 @@ export default function Modify({loaderData}: Route.LoadreArgs) {
   }
 
   useEffect(() => {
-    setCenter(club.geocode.lat, club.geocode.lng);
+    setCenter(club.geocode[0], club.geocode[1]);
   }, [])
 
   return (
@@ -72,7 +73,7 @@ export default function Modify({loaderData}: Route.LoadreArgs) {
             draggable={true}
             position={position}
             icon={{
-              url: club.icon.url,
+              url: club.imageurl || "/football-image.png", 
               size: [30,30],
             }}
             >

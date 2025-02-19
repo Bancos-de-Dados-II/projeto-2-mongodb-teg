@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import AddCircle from "@mui/icons-material/AddCircle";
 import Delete from "@mui/icons-material/Delete";
-import type { ClubeInput } from "~/utils/mockData";
+import type { ClubeInput } from "~/types";
 import type { Titulo } from "~/types";
 import UploadBtn, {links as uploadBtnLinks} from "./UploadBtn";
 
@@ -17,7 +17,7 @@ export const links: LinksFunction = () => [...uploadBtnLinks(), { rel: "styleshe
 
 export interface Props {
   defaultClube?: ClubeInput;
-  handleSubmit: (clube: ClubeInput) => any;
+  handleSubmit: (clube: ClubeInput) => any | Promise<any>;
   disabled: boolean
 }
 
@@ -50,7 +50,7 @@ export default function ClubeForm({ defaultClube, handleSubmit, disabled }: Prop
   function addTitle() {
     setClube((prev) => ({
       ...prev,
-      titulos: [...prev.titulos, { nome: "", conquistas: 1 }],
+      titulos: [...prev.titulos, { nome: "", numeroVezesVenceu: 1 }],
     }));
   }
 
@@ -120,7 +120,7 @@ export default function ClubeForm({ defaultClube, handleSubmit, disabled }: Prop
       />
 
       <UploadBtn
-        onFileSelect={(val: any) => handleChange("picture", val.value)}
+        onFileSelect={(val: any) => handleChange("fileImg", val.value)}
         disabled={disabled}
       />
 
@@ -141,8 +141,8 @@ export default function ClubeForm({ defaultClube, handleSubmit, disabled }: Prop
 
             <TextField
               id="titulo-number"
-              value={field.conquistas}
-              onChange={(e) => handleTitleChange("conquistas", e.target.value, index)}
+              value={field.numeroVezesVenceu}
+              onChange={(e) => handleTitleChange("numeroVezesVenceu", e.target.value, index)}
               variant="standard"
               size="small"
               type="number"
@@ -183,7 +183,13 @@ export default function ClubeForm({ defaultClube, handleSubmit, disabled }: Prop
         variant="contained"
         className="form-button"
         disabled={disabled}
-        onClick={() => handleSubmit({...clube, geocode: {lat: 0, lng: 0}, localizacao: "", pais: ""})}
+        onClick={() => handleSubmit({
+          ...clube,
+          nomeLocalizacao: "",
+          pais: "",
+          rivais: [] as string[],
+          geocode: { lat: 0, lon: 0 }
+        })}
       >
         Salvar
       </Button>

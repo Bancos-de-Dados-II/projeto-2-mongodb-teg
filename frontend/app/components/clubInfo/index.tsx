@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import {  useRef } from "react";
 import { useNavigate, type LinksFunction } from "react-router";
 import { Button } from "@mui/material";
-import type { Clube } from "~/utils/mockData";
 
 import styles from "./styles.css?url";
+import type { Clube } from "~/types";
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 const fallbackImg = "/football-club.png"
@@ -31,7 +31,7 @@ export default function ClubInfo({ club }: ClubInfoProps) {
     </div>
     <div className="bottom-club-div">
       <div className="club-logo">
-        <img ref={imgRef} className="club-logo-img" src={club.icon.url || fallbackImg} onError={handleImageError} alt={club.nome} />
+        <img ref={imgRef} className="club-logo-img" src={club.imageurl || fallbackImg} onError={handleImageError} alt={club.nome} />
       </div>
         <ClubData club={club} />
     </div>
@@ -45,8 +45,8 @@ function ClubData({club}: { club: Clube}) {
     { label: "Ano Fundação", value: club.anoFundacao },
     { label: "Estádio", value: club.estadio },
     { label: "Liga", value: club.liga },
-    { label: "Local", value: club.local },
-    { label: "País", value: club.country },
+    { label: "Local", value: club.nomeLocalizacao },
+    { label: "País", value: club.pais },
   ];
 
   return (
@@ -70,10 +70,10 @@ function ClubData({club}: { club: Clube}) {
         <p>No titles conquered</p>
       ) : (
         <ul>
-          {club.titulos.map(({ nome, conquistas }, ind) => (
+          {club.titulos.map(({ nome, numeroVezesVenceu }, ind) => (
             <li key={ind}>
               <p className="player-info-subtitle text-green">
-                <span className="text-dark text-lower">{conquistas}x: </span>
+                <span className="text-dark text-lower">{numeroVezesVenceu}x: </span>
                 {nome}
               </p>
             </li>

@@ -10,5 +10,30 @@ export type MyIcon = {
 
 export type Titulo = {
   nome: string;
-  conquistas: number;
-}
+  numeroVezesVenceu: number;
+};
+
+export type BaseClube = {
+  nome: string;
+  tecnico: string;
+  anoFundacao: number;
+  estadio: string;
+  liga: string;
+  titulos: Titulo[];
+};
+
+export type Clube = BaseClube & {
+  id: string;
+  icon: MyIcon;
+  imageurl: string
+  geocode: [number, number];
+  nomeLocalizacao: string;
+  pais: string
+  rivais: string[]
+};
+
+export type ClubeInput = Omit<Clube, 'id' | 'icon' > & {
+  fileImg?: File | null;
+  imageurl?: string
+};
+

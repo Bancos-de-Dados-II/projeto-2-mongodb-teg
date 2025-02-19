@@ -2,7 +2,6 @@ import {   useEffect, useMemo } from "react";
 import { Outlet, useNavigate } from "react-router";
 import type { LinksFunction } from "react-router";
 import type { Route } from "./+types/home";
-import { type Clube } from "~/utils/mockData";
 import { useMapStore } from "~/stores/mapStore";
 import MarkerPopup from "~/components/MarkerPopup/index.client";
 
@@ -14,6 +13,7 @@ import AutocompleteInput, {
 import styles from "./styles.css?url";
 import FilterInput from "~/components/FilterInput";
 import { useClubStore } from "~/stores/clubStore";
+import type { Clube } from "~/types";
 
 export const links: LinksFunction = () => [
   ...autocompleteInputLinks(),
@@ -44,8 +44,7 @@ export default function Home() {
 
   const handleSelection = (selection: Clube | string) => {
     if (typeof selection === "string") return;
-    const { geocode } = selection;
-    setCenter(geocode.lat, geocode.lng);
+    setCenter(selection.geocode[0], selection.geocode[1])
     navigate(`/club/${selection.id}`);
   }
 
@@ -57,12 +56,13 @@ export default function Home() {
   const markers = useMemo(() => filteredClubs.map((club) => (
       <MarkerPopup
         key={club.id}
-        icon={club.icon}
-        position={[club.geocode.lat, club.geocode.lng]}
+        icon={{url: club.imageurl, size: [30,30]}}
+        position={club.geocode}
         popupContent={<h3>{club.nome}</h3>}
+        draggable={false}
         eventHandlers={{
           click: () => {
-            setCenter(club.geocode.lat, club.geocode.lng);
+            setCenter(club.geocode[0], club.geocode[1])
             navigate(`/club/${club.id}`);
           },
         }}

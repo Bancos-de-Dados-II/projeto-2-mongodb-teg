@@ -10,7 +10,7 @@ function MapCenterHandler() {
   const { center } = useMapStore();
 
   useEffect(() => {
-    if (center) map.flyTo(center, map.getZoom());
+    if (center) map.flyTo(center, map.getZoom() + 3);
   }, [center, map]);
 
   return null;

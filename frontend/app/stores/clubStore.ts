@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { fetchAllClubs, type Clube } from "~/utils/mockData";
 import { getAllCountries } from "~/api/countriesNow";
+import type { Clube } from "~/types";
+import { getAllClubes } from "~/api/custom";
 
 interface ClubState {
   clubs: Clube[];
@@ -34,7 +35,7 @@ export const useClubStore = create<ClubState>()((set, get) => ({
   fetchClubs: async () => {
     set({ loadingClubs: true, error: null });
     try {
-      let clubs = await fetchAllClubs();
+      const clubs = await getAllClubes();
       set({
         clubs: clubs,
         filteredClubs: clubs,
@@ -61,7 +62,7 @@ export const useClubStore = create<ClubState>()((set, get) => ({
   applyFilter: (value) => {
     set((state) => {
       const newFilter = value
-        ? state.filteredClubs.filter((club) => club.country === value)
+        ? state.filteredClubs.filter((club) => club.pais === value)
         : state.clubs;
       return {
         filter: value,
