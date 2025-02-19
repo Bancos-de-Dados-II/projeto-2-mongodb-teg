@@ -1,3 +1,35 @@
 main {
-  background-color: blue;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.club-form-placeholder {
+  width: 100%;
+  height: 35vh;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 1rem;
+}
+
+.searchInput{
+  justify-content: space-between;
+  width: 100%;
+}
+
+.flex-row {
+  display: flex;
+}
+
+.filter-div {
+  gap: 2rem;
+  align-content: center;
+  align-items: center;
 }
