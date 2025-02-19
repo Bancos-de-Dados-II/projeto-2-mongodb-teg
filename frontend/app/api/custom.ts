@@ -8,12 +8,16 @@ export async function getAllClubes(): Promise<Clube[]> {
     data.map((val) => {
       // @ts-ignore
       const [longitude, latitude] = val.geocode.coordinates;
+      if (!longitude || !latitude) {
+        return
+      }
       val.geocode = [latitude, longitude];
       // @ts-ignore
       val.id = val._id;
       // @ts-ignore
       val._id = undefined;
     });
+    data = data.filter((d) => d.geocode[0] !== undefined);
     return data;
   } catch (err) {
     return [];
@@ -37,37 +41,49 @@ export async function getClubById(id: string): Promise<Clube | undefined> {
   }
 }
 
+async function createClubFormData(club: Omit<ClubeInput, "id" | "_id">): Promise<FormData> {
+  const formData = new FormData();
+  formData.append('nome', club.nome);
+  formData.append('liga', club.liga);
+  formData.append('anoFundacao', club.anoFundacao.toString());
+  formData.append('estadio', club.estadio);
+  formData.append('nomeLocalizacao', club.nomeLocalizacao);
+  formData.append('pais', club.pais);
+  formData.append('tecnico', club.tecnico);
+
+  if (club.file) formData.append('file', club.file);
+
+  club.titulos.forEach((titulo, index) => {
+    formData.append(`titulos[${index}][nome]`, titulo.nome);
+    formData.append(`titulos[${index}][numeroVezesVenceu]`, titulo.numeroVezesVenceu.toString());
+  });
+
+  formData.append("geocode", JSON.stringify({
+    type: "Point",
+    coordinates: [club.geocode[1], club.geocode[0]]
+  }));
+
+  return formData;
+}
+
 export async function insertClubWithFile(club: ClubeInput): Promise<boolean> {
   try {
-    const formData = new FormData();
-    formData.append('nome', club.nome);
-    formData.append('liga', club.liga);
-    formData.append('anoFundacao', club.anoFundacao.toString());
-    formData.append('estadio', club.estadio);
-    formData.append('nomeLocalizacao', club.nomeLocalizacao);
-    formData.append('pais', club.pais);
-    formData.append('tecnico', club.tecnico);
-
-    if (club.file) formData.append('file', club.file);
-
-    club.titulos.forEach((titulo, index) => {
-      formData.append(`titulos[${index}][nome]`, titulo.nome);
-      formData.append(`titulos[${index}][numeroVezesVenceu]`, titulo.numeroVezesVenceu.toString());
-    });
-
-    formData.append("geocode", JSON.stringify({
-      type: "Point",
-      coordinates: [club.geocode[0], club.geocode[1]]
-    }))
-
-    const response = await fetch('http://localhost:3000/clubes', {
-      method: 'POST',
-      body: formData
-    });
-
-    return response.ok;
+    const formData = await createClubFormData(club);
+    const response = await axios.postForm('http://localhost:3000/clubes', formData);
+    return response.status === 201;
   } catch (error) {
     console.error('Error inserting club:', error);
+    return false;
+  }
+}
+
+export async function updateWithFile(club: Omit<ClubeInput, "id" | "_id">, id: string): Promise<boolean> {
+  try {
+    const formData = await createClubFormData(club);
+    const response = await axios.putForm('http://localhost:3000/clubes/' + id, formData);
+    return response.status === 201;
+  } catch (error) {
+    console.error('Error updating club:', error);
     return false;
   }
 }
@@ -94,7 +110,6 @@ export async function updateClub(club: Omit<ClubeInput, "id" | "_id">, id: strin
 
 export async function insertClub(club: ClubeInput): Promise<any | undefined> {
   try {
-
     const coords = club.geocode
 
     // @ts-ignore
@@ -102,7 +117,6 @@ export async function insertClub(club: ClubeInput): Promise<any | undefined> {
       type: "Point",
       coordinates: [coords[1], coords[0]],
     }
-
 
     const {data} = await axios.post("http://localhost:3000/clubes", club)
     if (!data) return;

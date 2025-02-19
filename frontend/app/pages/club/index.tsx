@@ -24,11 +24,11 @@ export async function clientLoader({ params }: Route.ComponentProps) {
 }
 
 export default function Club({ loaderData }: Route.ComponentProps) {
-  const { setCenter } = useMapStore();
+  // const { setCenter } = useMapStore();
 
-  useEffect(() => {
-    setCenter(loaderData.geocode[0], loaderData.geocode[1]);
-  }, []);
+  // useEffect(() => {
+  //   setCenter(loaderData.geocode[0], loaderData.geocode[1]);
+  // }, []);
 
   return <ClubInfo club={loaderData} />;
 }

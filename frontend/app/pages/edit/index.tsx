@@ -13,7 +13,7 @@ import Map, {links as mapLinks} from "~/components/Map/index.client";
 
 import styles from "./styles.css?url"
 import type { ClubeInput } from "~/types";
-import { deleteClub, getClubById, updateClub as updateClubAPI } from "~/api/custom";
+import { deleteClub, getClubById, updateClub as updateClubAPI, updateWithFile } from "~/api/custom";
 import { useClubStore } from "~/stores/clubStore";
 export const links: LinksFunction = () => [
   ...searchInputLinks(),
@@ -48,7 +48,15 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
     club.pais = location?.pais || "";
     club.nomeLocalizacao = location?.nomeLocalizacao || "";
     const {id, _id, ...other} = club;
-    const result = await updateClubAPI(other, club.id);
+    let result;
+    console.log(id)
+    if (club.file) {
+      result = await updateWithFile(other, id)
+    } else {
+      result = await updateClubAPI(other, id);
+    }
+
+
     if (result) {
       await fetchClubs()
       navigate("/")
@@ -63,7 +71,7 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
     if (!result) return;
     if (childRef.current) {
       childRef.current.setLatLng([result[0], result[1]])
-      setCenter(result[0], result[1])
+      setCenter([result[0], result[1]])
     }
   }
 
@@ -71,11 +79,12 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
     setLoader(true);
     const resp = await deleteClub(club.id)
     if (resp) await fetchClubs();
+    setCenter(null)
     navigate("/")
   }
 
   useEffect(() => {
-    setCenter(club.geocode[0], club.geocode[1]);
+    setCenter([club.geocode[0], club.geocode[1]]);
   }, [])
 
   return (

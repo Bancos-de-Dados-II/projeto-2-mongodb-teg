@@ -42,11 +42,11 @@ export default function Home() {
     fetchData();
   }, [fetchClubs, fetchCountries]);
 
-  const handleSelection = (selection: Clube | string) => {
-    if (typeof selection === "string") return;
-    setCenter(selection.geocode[0], selection.geocode[1])
-    navigate(`/club/${selection.id}`);
-  }
+  function handleSelection(selection: Clube | string) {
+      if (typeof selection === "string") return;
+      setCenter([selection.geocode[0], selection.geocode[1]]);
+      navigate(`/club/${selection.id}`);
+    }
 
   const handleCountrySelection = (value: string | null) => {
     const countryCode = value?.substring(5) ?? null;
@@ -62,7 +62,7 @@ export default function Home() {
         draggable={false}
         eventHandlers={{
           click: () => {
-            setCenter(club.geocode[0], club.geocode[1])
+            setCenter([club.geocode[0], club.geocode[1]])
             navigate(`/club/${club.id}`);
           },
         }}

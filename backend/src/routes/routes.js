@@ -6,7 +6,7 @@ const route = express.Router();
 
 route.get('/', clubeController.findAllClubs);
 route.get('/:id', clubeController.findByIdClub);
-route.post('/', clubeController.createClub);
+route.post('/',fileMiddleware, clubeController.createClub);
 route.delete('/:id', clubeController.deleteClub);
 route.put('/:id',fileMiddleware, clubeController.updateClub);
 

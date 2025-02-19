@@ -33,12 +33,7 @@ export async function createClub(req, res){
     try {
         const {id, nome, tecnico, nomeCurto, anoFundacao, estadio, liga,
             nomeLocalizacao, pais, titulos, rivais, geocode, imageurl } = req.body;
-        
-        let geocodeObjeto = null;
-
-    console.log("-------------------------------------")
-    console.log(req.body)
-    console.log("-------------------------------------")
+          let geocodeObjeto = null;
 
         // Se geocode for uma string, tenta fazer o parse
         if (typeof geocode === "string") {

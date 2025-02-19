@@ -38,7 +38,7 @@ const imgBbUpload = async (fileBuffer) => {
 };
 
 export const fileMiddleware = [
-  upload.single("image"),
+  upload.single("file"),
   async (req, res, next) => {
     try {
       const file = req.file;

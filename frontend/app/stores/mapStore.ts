@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 
 interface MapState {
-  center?: [number, number];
-  setCenter: (lat: number, lng: number) => void;
+  center: [number, number] | null;
+  setCenter: (center: [number, number] | null) => void;
 }
 
 export const useMapStore = create<MapState>((set) => ({
-  setCenter: (lat, lng) => set({ center: [lat, lng] }),
+  center: null,
+  setCenter: (center) => set({ center }),
 }));
