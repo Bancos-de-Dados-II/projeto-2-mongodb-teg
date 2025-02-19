@@ -23,7 +23,7 @@ const imgBbUpload = async (fileBuffer) => {
 
   try {
     const res = await axios.post(
-      `https://api.imgbb.com/1/upload?expiration=600&key=${process.env.IMGBB_API}`,
+      `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API}`,
       form,
       {
         headers: {
