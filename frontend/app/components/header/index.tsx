@@ -7,10 +7,14 @@ export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 export default function Header() {
   return (
     <header>
+      <div className="footballLogo">
+        <img src="/football-logo.svg"/>
+      </div>
+      
       <nav>
-        <Link to="/">Home page</Link>
-        <Link to="/charts">Charts page</Link>
-        <Link to="/about">About page</Link>
+        <Link to="/" className="navLink">Home page</Link>
+        <Link to="/charts" className="navLink">Charts page</Link>
+        <Link to="/about" className="navLink">About page</Link>
       </nav>
     </header>
   );

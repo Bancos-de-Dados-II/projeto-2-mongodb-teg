@@ -1,4 +1,12 @@
 main {
-  background-color: green;
-  height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.chartsList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1rem;
+  gap: 1.5rem;
 }

@@ -1,12 +1,12 @@
 body {
-  min-height: 100vh;
+  min-height: 100%;
 }
 
 header {
-  height: 5vh;
+  height: 5%;
 }
 
 main {
-  height: 95vh;
-  min-height: 95vh;
+  height: 95%;
+  min-height: 95%;
 }
