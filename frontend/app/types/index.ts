@@ -24,6 +24,8 @@ export type BaseClube = {
 
 export type Clube = BaseClube & {
   id: string;
+  _id?: string
+  pos?: number;
   icon: MyIcon;
   imageurl: string
   geocode: [number, number];
@@ -32,8 +34,9 @@ export type Clube = BaseClube & {
   rivais: string[]
 };
 
-export type ClubeInput = Omit<Clube, 'id' | 'icon' > & {
-  fileImg?: File | null;
-  imageurl?: string
+export type ClubeInput = Omit<Clube, 'icon' > & {
+  id?: string
+  file: File | null;
+  imageurl: string | undefined
 };
 

@@ -15,6 +15,8 @@ interface ClubState {
   fetchCountries: () => Promise<void>;
   applyFilter: (value: string | null) => void;
   getClubById: (id: string) => Clube | undefined;
+  addClub:(clube: Clube) => void;
+  updateClub: (clube: Clube) => void;
 }
 
 export const useClubStore = create<ClubState>()((set, get) => ({
@@ -28,14 +30,25 @@ export const useClubStore = create<ClubState>()((set, get) => ({
   cities: [],
 
   getClubById(id: string) {
-    return get().clubs.find((club) => club.id === id);
+    return get().clubs.find((club) => club.id === id || club.id === id);
   },
 
+  updateClub(clube: Clube) {
+    set((state) => ({
+      clubs: state.clubs.map((c) => (c.id === clube.id ? clube : c)),
+    }));
+  },
+
+  addClub(clube: Clube) {
+    console.log(clube)
+    set((state) => ({ clubs: [...state.clubs, clube] }));
+  },
 
   fetchClubs: async () => {
     set({ loadingClubs: true, error: null });
     try {
       const clubs = await getAllClubes();
+      clubs.map((clube, index) => clube.pos = index)
       set({
         clubs: clubs,
         filteredClubs: clubs,

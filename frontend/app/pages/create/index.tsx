@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import {  type LinksFunction } from "react-router";
+import {  useNavigate, type LinksFunction } from "react-router";
 import {  Typography } from "@mui/material";
 
-import { type ClubeInput } from "~/utils/mockData";
-import { querySearch } from "~/api/nomatin";
+import { getLocationByCoordenates, querySearch } from "~/api/nomatin";
 import { useMapStore } from "~/stores/mapStore";
 import MarkerPopup from "~/components/MarkerPopup/index.client";
 import SearchInput, {links as searchInputLinks} from "~/components/SearchInput"
@@ -11,6 +10,10 @@ import ClubForm, {links as formLinks} from "~/components/ClubForm";
 import Map, {links as mapLinks} from "~/components/Map/index.client";
 
 import styles from "./styles.css?url"
+import type { ClubeInput } from "~/types";
+import { insertClub } from "~/api/custom";
+import { useClubStore } from "~/stores/clubStore";
+import { fetchAllClubs } from "~/utils/mockData";
 export const links: LinksFunction = () => [
   ...searchInputLinks(),
   ...formLinks(),
@@ -22,16 +25,26 @@ export default function Create() {
   const [loader, setLoader]= useState(false);
   const [position] = useState<[number, number]>([0,0]);
   const childRef = useRef<L.Marker | null>(null);
-  const { setCenter }= useMapStore();
+  const { setCenter, }= useMapStore();
+  const {addClub}=useClubStore();
+  const navigate = useNavigate();
 
   async function handleClubSubmit(club: ClubeInput) {
     setLoader(true);
-    // let pos;
-    // if (childRef.current) {
-    //   pos = childRef.current.getLatLng();
-    //   club.geocode = { lat: pos.lat, lng: pos.lng };
-    // }
-    // setLoader(false)
+    let pos;
+
+    if (!childRef.current) return;
+    pos = childRef.current.getLatLng();
+    club.geocode = [pos.lat, pos.lng];
+    const location = await getLocationByCoordenates(pos.lat, pos.lng);
+    club.pais = location?.pais || "";
+    club.nomeLocalizacao = location?.nomeLocalizacao || "";
+    const result = await insertClub(club);
+    if (result) {
+      await fetchAllClubs()
+      navigate("/club/" + result.id)
+    }
+    else setLoader(false);
   }
 
   async function onSearch(query: string) {

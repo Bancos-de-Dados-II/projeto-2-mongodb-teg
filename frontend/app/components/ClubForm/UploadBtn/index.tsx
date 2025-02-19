@@ -14,11 +14,12 @@ interface UploadBtnProps {
 export default function UploadBtn({ onFileSelect, disabled }: UploadBtnProps) {
   const [file, setFile] = useState<File | null | undefined>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.item(0);
-    setFile(selectedFile);
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = event.target.files;
+    const selectedFile = files ? files.item(0) : null;
     onFileSelect(selectedFile);
-  };
+    setFile(selectedFile);
+  }
 
   return (
     <Button

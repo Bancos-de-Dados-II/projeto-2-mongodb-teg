@@ -56,7 +56,7 @@ export default function Home() {
   const markers = useMemo(() => filteredClubs.map((club) => (
       <MarkerPopup
         key={club.id}
-        icon={{url: club.imageurl, size: [30,30]}}
+        icon={{url: club.imageurl || "/football-club.png", size: [30,30]}}
         position={club.geocode}
         popupContent={<h3>{club.nome}</h3>}
         draggable={false}

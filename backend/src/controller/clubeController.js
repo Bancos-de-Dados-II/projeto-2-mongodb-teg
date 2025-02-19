@@ -1,5 +1,12 @@
 import multer from "multer";
+import mongoose from 'mongoose';
+
 import Clube from "../model/clube.js";
+
+function convertToUUID(hexString) {
+  let paddedHex = hexString.padEnd(32, '0');
+  return `${paddedHex.slice(0, 8)}-${paddedHex.slice(8, 12)}-${paddedHex.slice(12, 16)}-${paddedHex.slice(16, 20)}-${paddedHex.slice(20, 32)}`;
+}
 
 export async function findByIdClub(req, res){
     try {
@@ -29,11 +36,16 @@ export async function createClub(req, res){
         
         let geocodeObjeto = null;
 
+    console.log("-------------------------------------")
+    console.log(req.body)
+    console.log("-------------------------------------")
+
         // Se geocode for uma string, tenta fazer o parse
         if (typeof geocode === "string") {
             try {
                 geocodeObjeto = JSON.parse(geocode);
             } catch (error) {
+              console.log("here")
                 return res.status(400).json({ error: "Formato de geocode inválido" });
             }
         } else if (typeof geocode === "object" && geocode !== null) {
@@ -58,12 +70,14 @@ export async function createClub(req, res){
         res.status(201).json(clube);
         
     } catch (error) {
+        console.log(error)
         res.status(400).json({message: "Error ao tentar criar clube"});
     }
 }
 export async function deleteClub(req, res){
     try {
-        const id = req.params.id;
+        let id = req.params.id;
+        id = id.trim()
         await Clube.deleteOne({_id: id})
         .then(resultado =>{
             if(resultado.deletedCount > 0){
@@ -75,12 +89,17 @@ export async function deleteClub(req, res){
         res.status(404).json({message: "Error: Clube não encontrado"});
     }
 }
+
 export async function updateClub(req, res){
     try {
-        const id = req.params.id;
-        const clube = await Clube.findOneAndUpdate({_id:id}, req.body, {new:true})
+        let id = req.params.id;
+        const objectId = new mongoose.Types.ObjectId(id);
+        req.body._id = undefined
+        req.body.id = undefined
+        const clube = await Clube.findOneAndUpdate({_id:objectId}, req.body, {new:true})
         res.status(200).json(clube);
     } catch (error) {
+        console.log(error)
         res.status(404).json({message: "Error: Clube não encontrado"});
         
     }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { LinksFunction } from "react-router";
 import {
   TextField,
@@ -22,23 +22,23 @@ export interface Props {
 }
 
 export default function ClubeForm({ defaultClube, handleSubmit, disabled }: Props) {
-  const [clube, setClube] = useState(
+  const [clube, setClube] = useState<ClubeInput>(
     defaultClube || {
       nome: "",
       tecnico: "",
       anoFundacao: 2000,
       estadio: "",
       liga: "",
-      fileImg: null,
+      file: undefined,
       titulos: [] as Titulo[],
     }
   );
 
-  const handleChange = (key: string, val: any) => {
+  function handleChange(key: string, val: any) {
     setClube((prev) => ({ ...prev, [key]: val }));
-  };
+  }
 
-  const handleTitleChange = (key: string, val: any, index: number) => {
+  function handleTitleChange(key: string, val: any, index: number) {
     setClube((prev) => ({
       ...prev,
       titulos: prev.titulos.map((item, i) =>
@@ -120,7 +120,7 @@ export default function ClubeForm({ defaultClube, handleSubmit, disabled }: Prop
       />
 
       <UploadBtn
-        onFileSelect={(val: any) => handleChange("fileImg", val.value)}
+        onFileSelect={(val: any) =>  { handleChange("file", val)}}
         disabled={disabled}
       />
 
@@ -183,13 +183,9 @@ export default function ClubeForm({ defaultClube, handleSubmit, disabled }: Prop
         variant="contained"
         className="form-button"
         disabled={disabled}
-        onClick={() => handleSubmit({
-          ...clube,
-          nomeLocalizacao: "",
-          pais: "",
-          rivais: [] as string[],
-          geocode: { lat: 0, lon: 0 }
-        })}
+        onClick={() => {
+          handleSubmit(clube)
+        }}
       >
         Salvar
       </Button>

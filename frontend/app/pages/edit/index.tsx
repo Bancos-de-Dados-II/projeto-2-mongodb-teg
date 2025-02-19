@@ -4,7 +4,7 @@ import type { Route } from "./+types/modify";
 import { Button, Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { querySearch } from "~/api/nomatin";
+import { getLocationByCoordenates, querySearch } from "~/api/nomatin";
 import { useMapStore } from "~/stores/mapStore";
 import MarkerPopup from "~/components/MarkerPopup/index.client";
 import SearchInput, {links as searchInputLinks} from "~/components/SearchInput"
@@ -13,7 +13,7 @@ import Map, {links as mapLinks} from "~/components/Map/index.client";
 
 import styles from "./styles.css?url"
 import type { ClubeInput } from "~/types";
-import { deleteClubById, getClubById } from "~/api/custom";
+import { deleteClubById, getClubById, insertClub, insertClubWithFile, updateClub as updateClubAPI } from "~/api/custom";
 import { useClubStore } from "~/stores/clubStore";
 export const links: LinksFunction = () => [
   ...searchInputLinks(),
@@ -39,12 +39,21 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
 
   async function handleClubSubmit(club: ClubeInput) {
     setLoader(true);
-    // let pos;
-    // if (childRef.current) {
-    //   pos = childRef.current.getLatLng();
-    //   club.geocode = { lat: pos.lat, lng: pos.lng };
-    // }
-    // setLoader(false)
+    let pos;
+
+    if (!childRef.current) return;
+    pos = childRef.current.getLatLng();
+    club.geocode = [pos.lat, pos.lng];
+    const location = await getLocationByCoordenates(pos.lat, pos.lng);
+    club.pais = location?.pais || "";
+    club.nomeLocalizacao = location?.nomeLocalizacao || "";
+    const {id, _id, ...other} = club;
+    const result = await updateClubAPI(other, club.id);
+    if (result) {
+      await fetchClubs()
+      navigate("/club/" + result.id)
+    }
+    else setLoader(false);
   }
 
   async function onSearch(query: string) {
@@ -83,7 +92,7 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
             draggable={true}
             position={position}
             icon={{
-              url: club.imageurl || "/football-image.png", 
+              url: club.imageurl || "/football-club.png", 
               size: [30,30],
             }}
             >
