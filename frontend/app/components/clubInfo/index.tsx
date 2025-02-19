@@ -25,7 +25,7 @@ export default function ClubInfo({ club }: ClubInfoProps) {
     <div className="upper-club-div">
       <h1 className="club-name">{club.nome}</h1>
       <div className="button-div">
-        <Button variant="contained" onClick={() => navigate(`/modify/${club.id}`)}>Edit</Button>
+        <Button variant="contained" onClick={() => navigate(`/edit/${club.id}`)}>Edit</Button>
         <Button variant="contained" color="error" onClick={() => navigate("/")}>Close</Button>
       </div>
     </div>
