@@ -15,6 +15,7 @@ export default [
     ]),
     // index("pages/home/index.tsx"),
     route("/charts", "pages/charts/index.tsx"),
+    route("/edit/:id", "pages/edit/index.tsx"),
   ]),
 
   // the about page will not use any layout (just one example)

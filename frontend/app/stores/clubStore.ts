@@ -13,6 +13,7 @@ interface ClubState {
   fetchClubs: () => Promise<void>;
   fetchCountries: () => Promise<void>;
   applyFilter: (value: string | null) => void;
+  getClubById: (id: string) => Clube | undefined;
 }
 
 export const useClubStore = create<ClubState>()((set, get) => ({
@@ -24,6 +25,11 @@ export const useClubStore = create<ClubState>()((set, get) => ({
   filter: null,
   countries: [],
   cities: [],
+
+  getClubById(id: string) {
+    return get().clubs.find((club) => club.id === id);
+  },
+
 
   fetchClubs: async () => {
     set({ loadingClubs: true, error: null });

@@ -10,19 +10,30 @@ export type Geocode = {
   lng: number;
 };
 
-export type Clube = {
-  id: string;
+export type BaseClube = {
   nome: string;
-  icon: MyIcon,
   tecnico: string;
   anoFundacao: number;
   estadio: string;
   liga: string;
+  titulos: Titulo[];
+};
+
+export type Clube = BaseClube & {
+  id: string;
+  icon: MyIcon;
   local: string;
   country: string;
-  titulos: Titulo[];
   geocode: Geocode;
 };
+
+export type ClubeInput = BaseClube & {
+  localizacao: string;
+  pais: string;
+  geocode: Geocode;
+  fileImg?: File | null
+};
+
 
 export const clubMap = new Map<string, Clube>([
   [

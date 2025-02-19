@@ -7,3 +7,8 @@ export type MyIcon = {
   url: string;
   size: [number, number];
 };
+
+export type Titulo = {
+  nome: string;
+  conquistas: number;
+}

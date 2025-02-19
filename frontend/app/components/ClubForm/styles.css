@@ -1,0 +1,66 @@
+.clube-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 30rem;
+  padding: 1.5rem;
+}
+
+.form-title {
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-input, .form-control, .form-select {
+  border-radius: 4px;
+}
+
+.form-button {
+  background: #1976d2;
+  color: white;
+  padding: 0.75rem;
+  font-weight: bold;
+}
+
+.form-button:hover {
+  background: #1565c0;
+}
+
+.club-edit-form-titulosdiv {
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.club-edit-form-titulofield {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.titulos-label {
+  padding-left: .4rem;
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.titulo-field-name {
+  flex: 1 1 80%;
+}
+
+.titulo-field-number {
+  margin-top: auto !important;
+  flex: 1 1 20%;
+}
+
+.titulo-field-trash {
+  margin-top: auto !important;
+}
+
+.titulo-field-add {
+  width: fit-content;
+  margin-left: .5rem !important;
+}

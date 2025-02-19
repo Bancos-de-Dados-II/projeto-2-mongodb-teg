@@ -4,9 +4,10 @@ import SearchIcon from "@mui/icons-material/Search";
 
 interface InputComponentProps {
   params: AutocompleteRenderInputParams;
+  handleSelection? (el: any): any
 }
 
-export default function CustomInputComponent({ params }: InputComponentProps) {
+export default function CustomInputComponent({ params, handleSelection }: InputComponentProps) {
   return (
     <Paper
       component="form"
@@ -26,7 +27,7 @@ export default function CustomInputComponent({ params }: InputComponentProps) {
         }}
       />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton type="button" sx={{ p: "10px" }} disabled>
+      <IconButton type="button" sx={{ p: "10px" }} disabled={!handleSelection} onClick={handleSelection}>
         <SearchIcon />
       </IconButton>
     </Paper>

@@ -1,13 +1,9 @@
-import { useNavigate, type LinksFunction } from "react-router";
-import { useMap, Marker, MapContainer, TileLayer, Popup } from "react-leaflet";
-import { Icon } from "leaflet";
+import {  type LinksFunction } from "react-router";
+import { useMap, MapContainer, TileLayer } from "react-leaflet";
 
 import styles from "./styles.css?url";
-import { useEffect, useState, type ReactNode } from "react";
-import { type Clube, fetchAllClubs } from "~/utils/mockData";
+import { useEffect, type ReactNode } from "react";
 import { useMapStore } from "~/stores/mapStore";
-import { useStore } from "zustand";
-import { useClubStore } from "~/stores/clubStore";
 
 function MapCenterHandler() {
   const map = useMap();

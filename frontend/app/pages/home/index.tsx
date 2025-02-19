@@ -1,4 +1,4 @@
-import {  useCallback, useEffect, useMemo } from "react";
+import {   useEffect, useMemo } from "react";
 import { Outlet, useNavigate } from "react-router";
 import type { LinksFunction } from "react-router";
 import type { Route } from "./+types/home";
@@ -7,16 +7,16 @@ import { useMapStore } from "~/stores/mapStore";
 import MarkerPopup from "~/components/MarkerPopup/index.client";
 
 import Map, { links as mapLinks } from "~/components/Map/index.client";
-import SearchInput, {
-  links as searchInputLinks,
-} from "~/components/SearchInput";
+import AutocompleteInput, {
+  links as autocompleteInputLinks,
+} from "~/components/AutocompleteInput";
 
 import styles from "./styles.css?url";
 import FilterInput from "~/components/FilterInput";
 import { useClubStore } from "~/stores/clubStore";
 
 export const links: LinksFunction = () => [
-  ...searchInputLinks(),
+  ...autocompleteInputLinks(),
   ...mapLinks(),
   { rel: "stylesheet", href: styles },
 ];
@@ -36,11 +36,11 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      if (clubs.length === 0)await fetchClubs();
-      if (countries.length === 0)await fetchCountries();
+      if (clubs.length === 0) await fetchClubs();
+      if (countries.length === 0) await fetchCountries();
     }
     fetchData();
-  }, [clubs.length, countries.length, fetchClubs, fetchCountries]);
+  }, [fetchClubs, fetchCountries]);
 
   const handleSelection = (selection: Clube | string) => {
     if (typeof selection === "string") return;
@@ -72,7 +72,7 @@ export default function Home() {
   return (
     <main>
       <div className="searchInput flex-row">
-        <SearchInput<Clube>
+        <AutocompleteInput<Clube>
           data={clubs}
           property="nome"
           handleSelection={handleSelection}

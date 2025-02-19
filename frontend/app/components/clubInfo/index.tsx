@@ -12,20 +12,12 @@ interface ClubInfoProps {
   club: Clube;
 }
 
-let rerenders = 0;
-
 export default function ClubInfo({ club }: ClubInfoProps) {
   const navigate = useNavigate();
   const imgRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
-    if (club.nome === "Ajax") console.log(++rerenders);
-  });
-
   function handleImageError() {
-    if (imgRef.current) {
-      imgRef.current.src = fallbackImg;
-    }
+    if (imgRef.current) imgRef.current.src = fallbackImg;
   }
 
   return (
@@ -33,7 +25,7 @@ export default function ClubInfo({ club }: ClubInfoProps) {
     <div className="upper-club-div">
       <h1 className="club-name">{club.nome}</h1>
       <div className="button-div">
-        <Button variant="contained">Edit</Button>
+        <Button variant="contained" onClick={() => navigate(`/modify/${club.id}`)}>Edit</Button>
         <Button variant="contained" color="error" onClick={() => navigate("/")}>Close</Button>
       </div>
     </div>

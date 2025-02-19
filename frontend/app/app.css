@@ -36,6 +36,11 @@ body {
   background: rgba(0, 0, 0, 0.5);
 }
 
+.max-width {
+  width: 100%;
+  max-width: 1224px;
+}
+
 /* @media (prefers-color-scheme: dark) { */
 /*   html, */
 /*   body { */
