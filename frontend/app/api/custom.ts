@@ -35,3 +35,15 @@ export async function getClubById(id: string): Promise<Clube | undefined> {
     return undefined;
   }
 }
+
+export async function deleteClubById(id: string): Promise<boolean> {
+  try {
+    const resp = await fetch(`http://localhost:3000/clubes/${id}`, {
+      method: "DELETE",
+    })
+    if (!resp.ok) return false;
+    return true;
+  } catch (err) {
+    return false;
+  }
+}

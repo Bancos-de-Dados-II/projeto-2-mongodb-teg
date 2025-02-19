@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { redirect, type LinksFunction } from "react-router";
+import { redirect, useNavigate, type LinksFunction } from "react-router";
 import type { Route } from "./+types/modify";
 import { Button, Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,7 +13,8 @@ import Map, {links as mapLinks} from "~/components/Map/index.client";
 
 import styles from "./styles.css?url"
 import type { ClubeInput } from "~/types";
-import { getClubById } from "~/api/custom";
+import { deleteClubById, getClubById } from "~/api/custom";
+import { useClubStore } from "~/stores/clubStore";
 export const links: LinksFunction = () => [
   ...searchInputLinks(),
   ...formLinks(),
@@ -27,12 +28,14 @@ export async function clientLoader({params}: Route.LoaderArgs) {
   return { club: result };
 }
 
-export default function Modify({loaderData}: Route.LoaderArgs) {
+export default function Edit({loaderData}: Route.LoaderArgs) {
   const { club } = loaderData;
   const [loader, setLoader]= useState(false);
   const [position] = useState<[number, number]>([club.geocode[0], club.geocode[1]]);
   const childRef = useRef<L.Marker | null>(null);
   const { setCenter }= useMapStore();
+  const navigate = useNavigate();
+  const {fetchClubs}= useClubStore();
 
   async function handleClubSubmit(club: ClubeInput) {
     setLoader(true);
@@ -53,6 +56,13 @@ export default function Modify({loaderData}: Route.LoaderArgs) {
       childRef.current.setLatLng([result[0], result[1]])
       setCenter(result[0], result[1])
     }
+  }
+
+  async function deleteClub() {
+    setLoader(true);
+    const resp = await deleteClubById(club.id)
+    if (resp) await fetchClubs();
+    navigate("/")
   }
 
   useEffect(() => {
@@ -79,7 +89,7 @@ export default function Modify({loaderData}: Route.LoaderArgs) {
             >
             </MarkerPopup>
           </Map>
-          <Button variant="outlined" startIcon={<DeleteIcon />} style={{marginTop: "auto", marginLeft: "auto"}} disabled={loader}>
+          <Button variant="outlined" startIcon={<DeleteIcon />} style={{marginTop: "auto", marginLeft: "auto"}} disabled={loader} onClick={deleteClub}>
             Delete
           </Button>
         </div>
