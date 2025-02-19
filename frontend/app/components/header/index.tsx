@@ -14,7 +14,7 @@ export default function Header() {
       <nav>
         <Link to="/" className="navLink">Home page</Link>
         <Link to="/charts" className="navLink">Charts page</Link>
-        <Link to="/about" className="navLink">About page</Link>
+        <Link to="/create" className="navLink">Add club</Link>
       </nav>
     </header>
   );
