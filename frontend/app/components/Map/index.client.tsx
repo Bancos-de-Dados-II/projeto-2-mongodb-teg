@@ -13,7 +13,7 @@ function MapCenterHandler() {
     if (center && center !== null) map.flyTo(center, map.getZoom() + 3);
   }, [center, map]);
 
-  return null;
+  return <></>;
 }
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];

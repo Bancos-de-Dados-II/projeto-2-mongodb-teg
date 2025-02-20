@@ -6,6 +6,7 @@ import { getAllClubes } from "~/api/custom";
 interface ClubState {
   clubs: Clube[];
   filteredClubs: Clube[];
+  initiated: boolean;
   loadingClubs: boolean;
   loadingCountries: boolean;
   error: string | null;
@@ -28,20 +29,23 @@ export const useClubStore = create<ClubState>()((set, get) => ({
   filter: null,
   countries: [],
   cities: [],
+  initiated: false,
 
   getClubById(id: string) {
     return get().clubs.find((club) => club.id === id || club.id === id);
   },
 
   updateClub(clube: Clube) {
-    set((state) => ({
-      clubs: state.clubs.map((c) => (c.id === clube.id ? clube : c)),
-    }));
+    const { clubs } = get();
+    const updatedClubs = clubs.map((c) => c.id === clube.id ? clube : c);
+    set({ clubs: updatedClubs });
   },
 
   addClub(clube: Clube) {
-    console.log(clube)
-    set((state) => ({ clubs: [...state.clubs, clube] }));
+    const { clubs, filter, applyFilter } = get();
+    const updatedClubs = [...clubs, clube];
+    set({ clubs: updatedClubs });
+    if (filter) applyFilter(filter)
   },
 
   fetchClubs: async () => {
@@ -53,6 +57,7 @@ export const useClubStore = create<ClubState>()((set, get) => ({
         clubs: clubs,
         filteredClubs: clubs,
         loadingClubs: false,
+        initiated: true
       });
     } catch (err) {
       set({ loadingClubs: false, error: "Failed to load clubs" });
@@ -75,7 +80,7 @@ export const useClubStore = create<ClubState>()((set, get) => ({
   applyFilter: (value) => {
     set((state) => {
       const newFilter = value
-        ? state.filteredClubs.filter((club) => club.pais === value)
+        ? state.clubs.filter((club) => club.pais === value)
         : state.clubs;
       return {
         filter: value,

@@ -11,8 +11,8 @@ import Map, {links as mapLinks} from "~/components/Map/index.client";
 
 import styles from "./styles.css?url"
 import type { ClubeInput } from "~/types";
-import { getAllClubes, insertClub, insertClubWithFile } from "~/api/custom";
-import { fetchAllClubs } from "~/utils/mockData";
+import { insertClub, insertClubWithFile } from "~/api/custom";
+import { useClubStore } from "~/stores/clubStore";
 export const links: LinksFunction = () => [
   ...searchInputLinks(),
   ...formLinks(),
@@ -25,6 +25,7 @@ export default function Create() {
   const [position] = useState<[number, number]>([0,0]);
   const childRef = useRef<L.Marker | null>(null);
   const { setCenter, }= useMapStore();
+  const { addClub, applyFilter }= useClubStore();
   const navigate = useNavigate();
 
   async function handleClubSubmit(club: ClubeInput) {
@@ -45,9 +46,10 @@ export default function Create() {
     }
 
     if (result) {
-      setTimeout(() => new Promise((res) => res))
-      await getAllClubes()
-      navigate("/")
+      addClub(result)
+      applyFilter(null)
+      setCenter([pos.lat, pos.lng])
+      navigate("/club/" + result.id)
     }
     else setLoader(false);
   }
@@ -63,9 +65,9 @@ export default function Create() {
     }
   }
 
-  // useEffect(() => {
-  //   setCenter([0, 0]);
-  // }, [])
+  useEffect(() => {
+    setCenter([0, 0]);
+  }, [])
 
   return (
     <div className="main-div max-width">

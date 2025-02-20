@@ -1,8 +1,5 @@
-import { clubMap } from "~/utils/mockData";
 import type { Route } from "./+types";
 import { redirect, type LinksFunction } from "react-router";
-import { useMapStore } from "~/stores/mapStore";
-import { useEffect } from "react";
 import ClubInfo, { links as clubInfoLinks } from "~/components/clubInfo";
 
 import styles from "./styles.css?url";
@@ -17,6 +14,7 @@ export const links: LinksFunction = () => [
 export async function clientLoader({ params }: Route.ComponentProps) {
   const { getState } = useClubStore
   const club = getState().getClubById(params.id)
+  console.log(club?.imageurl)
   const { id } = params;
   if (!id || !club) throw redirect("/");
 

@@ -3,31 +3,27 @@ import type { Clube, ClubeInput } from "~/types";
 
 export async function getAllClubes(): Promise<Clube[]> {
   try {
-    const resp = await fetch("http://localhost:3000/clubes");
-    let data: Clube[] = await resp.json();
-    data.map((val) => {
+    const resp = await axios("http://localhost:3000/clubes");
+    let data: Clube[] = await resp.data;
+    data.forEach((val) => {
       // @ts-ignore
       const [longitude, latitude] = val.geocode.coordinates;
-      if (!longitude || !latitude) {
-        return
-      }
       val.geocode = [latitude, longitude];
       // @ts-ignore
       val.id = val._id;
       // @ts-ignore
       val._id = undefined;
     });
-    data = data.filter((d) => d.geocode[0] !== undefined);
     return data;
   } catch (err) {
+    console.log(err)
     return [];
   }
 }
 
 export async function getClubById(id: string): Promise<Clube | undefined> {
   try {
-    const resp = await fetch("http://localhost:3000/clubes/" + id);
-    let data = await resp.json();
+    const {data} = await axios("http://localhost:3000/clubes/" + id);
     const [longitude, latitude] = data.geocode.coordinates;
     data.geocode = [latitude, longitude];
     // @ts-ignore
@@ -69,8 +65,11 @@ async function createClubFormData(club: Omit<ClubeInput, "id" | "_id">): Promise
 export async function insertClubWithFile(club: ClubeInput): Promise<boolean> {
   try {
     const formData = await createClubFormData(club);
-    const response = await axios.postForm('http://localhost:3000/clubes', formData);
-    return response.status === 201;
+    const {data} = await axios.postForm('http://localhost:3000/clubes', formData);
+    data.id = data._id;
+    const [longitude, latitude] = data.geocode.coordinates;
+    data.geocode = [latitude, longitude];
+    return data
   } catch (error) {
     console.error('Error inserting club:', error);
     return false;
@@ -80,8 +79,11 @@ export async function insertClubWithFile(club: ClubeInput): Promise<boolean> {
 export async function updateWithFile(club: Omit<ClubeInput, "id" | "_id">, id: string): Promise<boolean> {
   try {
     const formData = await createClubFormData(club);
-    const response = await axios.putForm('http://localhost:3000/clubes/' + id, formData);
-    return response.status === 201;
+    const {data} = await axios.putForm('http://localhost:3000/clubes/' + id, formData);
+    data.id = data._id;
+    const [longitude, latitude] = data.geocode.coordinates;
+    data.geocode = [latitude, longitude];
+    return data;
   } catch (error) {
     console.error('Error updating club:', error);
     return false;
@@ -92,8 +94,8 @@ export async function updateClub(club: Omit<ClubeInput, "id" | "_id">, id: strin
   try {
     const coords = club.geocode;
 
-    // @ts-ignore
     club.geocode = {
+      // @ts-ignore
       type: "Point",
       coordinates: [coords[1], coords[0]],
     };
@@ -112,8 +114,8 @@ export async function insertClub(club: ClubeInput): Promise<any | undefined> {
   try {
     const coords = club.geocode
 
-    // @ts-ignore
     club.geocode = {
+      // @ts-ignore
       type: "Point",
       coordinates: [coords[1], coords[0]],
     }

@@ -35,7 +35,7 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
   const childRef = useRef<L.Marker | null>(null);
   const { setCenter }= useMapStore();
   const navigate = useNavigate();
-  const {fetchClubs}= useClubStore();
+  const {fetchClubs, updateClub, applyFilter}= useClubStore();
 
   async function handleClubSubmit(club: ClubeInput) {
     setLoader(true);
@@ -49,17 +49,18 @@ export default function Edit({loaderData}: Route.LoaderArgs) {
     club.nomeLocalizacao = location?.nomeLocalizacao || "";
     const {id, _id, ...other} = club;
     let result;
-    console.log(id)
     if (club.file) {
       result = await updateWithFile(other, id)
     } else {
       result = await updateClubAPI(other, id);
     }
 
-
     if (result) {
-      await fetchClubs()
-      navigate("/")
+      console.log(result.imageurl)
+      updateClub(result);
+      applyFilter(null);
+      setCenter([pos.lat, pos.lng])
+      navigate("/club/" + id)
     }
     else setLoader(false);
   }
